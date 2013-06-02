@@ -46,3 +46,7 @@ def write_state_data(state, data, project_dir=""):
         pass
     state_file = open(os.path.join(project_dir, "{0}.json".format(state)),'w')
     json.dump(data, state_file)
+
+
+def assign_and_write_state_data(state, data, project_dir=""):
+    write_state_data(state, list(assign_guids(data)), project_dir)

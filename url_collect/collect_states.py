@@ -1,7 +1,11 @@
 from muni_data_client import _collect_states_data
-from muni_data_client import assign_guids
-from muni_data_client import write_state_data
+from muni_data_client import assign_and_write_state_data
 
+from functools import partial
+from itertools import starmap
+
+assign_and_write_state_data_out = partial(assign_and_write_state_data,
+                                          project_dir="out")
 
 def main():
     state_list = ['al', 'ak', 'az', 'ar', 'ca', 'co',
@@ -14,9 +18,8 @@ def main():
                   'tx', 'ut', 'vt', 'va', 'wa', 'wv',
                   'wi', 'wy', 'as', 'dc', 'fm', 'gu',
                   'mh', 'mp', 'pw', 'pr', 'vi']
-    states_data = _collect_states_data(state_list)
-    for state, data in states_data:
-        write_state_data(state, list(assign_guids(data)), "out")
+    list(starmap(assign_and_write_state_data_out,
+                 _collect_states_data(state_list)))
 
 
 if __name__ == '__main__':
